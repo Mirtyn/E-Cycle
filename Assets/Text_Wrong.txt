@@ -1,0 +1,108 @@
+    -14/08/2023 20:39:13-
+
+ SETTINGS:
+ -MapXSize: 24
+ -MapYSize: 24
+ -AmountTiles: 575
+ -ProcentChanceOfWaterBecomeSand: 0,44
+ -WaterMinRangeLandTilesDevider: 80
+ -WaterMaxRangeLandTilesDevider: 55
+ -DirtMinRangeLandTilesDevider: 80
+ -DirtMaxRangeLandTilesDevider: 55
+ -DirtMaxGenerations: 6
+ -DirtMaxGenerationsResultMultiplier: 12
+ -WaterMaxGenerations: 7
+ -WaterMaxGenerationsResultMultiplier: 10
+
+ TILES: 
+ -None = 'o' 
+ -Water = '~' 
+ -Grass = '=' 
+ -Dirt = '#' 
+ -Sand = '.' 
+
+ MAP: 
+
+START! 
+
+~~~~~~~~~~~~~~~~~~~~~~~~
+~..~.~~...~~....~~..~..~
+~~...~~.==.~~...~~~.~..~
+~~~~..~..==.~~~.~..~...~
+~..~~~~~~.=.~~..~.~~~~.~
+~~~~.~..~...~...~...~~.~
+~~.~~.=.~~~.~~~..==.~~~~
+~~~~..=.~~~~..~~...~~~~~
+~~~.~~..~.~~..~~~~.~~~.~
+~~..~~.=.=.~.=.~~..~~..~
+~~..~~.====.===..==..=.~
+~...~~..============##.~
+~~~~~~~~.===========##.~
+~~~~~~.....========.==.~
+~~~~.~~~~~~.======.~.=.~
+~~~..~~~..~..=====.~.=.~
+~..==..~..~~~.....~~~..~
+~...===.=.~~~~~~~.~~~..~
+~~~~..===.~~.~~.~~...=.~
+~.~~~~.===.~~...~~.===.~
+~~..~..===.~~~~~~~.==.~~
+~~~.~~~.===.~.~~......~~
+~.~..~~.......~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
+END! 
+ 
+
+    -14/08/2023 20:44:36-
+
+ SETTINGS:
+ -MapXSize: 24
+ -MapYSize: 24
+ -AmountTiles: 575
+ -ProcentChanceOfWaterBecomeSand: 0,44
+ -WaterMinRangeLandTilesDevider: 80
+ -WaterMaxRangeLandTilesDevider: 55
+ -DirtMinRangeLandTilesDevider: 80
+ -DirtMaxRangeLandTilesDevider: 55
+ -DirtMaxGenerations: 6
+ -DirtMaxGenerationsResultMultiplier: 12
+ -WaterMaxGenerations: 7
+ -WaterMaxGenerationsResultMultiplier: 10
+
+ TILES: 
+ -None = 'o' 
+ -Water = '~' 
+ -Grass = '=' 
+ -Dirt = '#' 
+ -Sand = '.' 
+
+ MAP: 
+
+START! 
+
+~~~~~~~~~~~~~~~~~~~~~~~~
+~..~~.~.~~.~~.....~.~~.~
+~~.~.=.=.~.~~.===.~.~~.~
+~..~~....~..~.===.~.~..~
+~.=.~~~~~~..~~.=#.~~~~~~
+~~.=...~~..~~.###=..~~.~
+~~.====...~~.~.####.~..~
+~~.=======.~~~~.##...=.~
+~.=========..~~.=.~~~..~
+~.========##.~~~..~~~~.~
+~.========###...=.~~~~.~
+~~.=============.~~~~~~~
+~.=============.~~~~.~~~
+~....===========..~..~~~
+~.~~~.#==========.~..~~~
+~~~~~.###=====####.==.~~
+~~~~~.#==#====####==.~~~
+~....##==###==#=##==.~~~
+~~~~.=######===###==.~.~
+~~~...==...###==#==.~~.~
+~~~~~~..~~~.=======.~~.~
+~.~~..~~~~~.========...~
+~.~...~~~.~............~
+~~~~~~~~~~~~~~~~~~~~~~~~
+END! 
+ 
+
