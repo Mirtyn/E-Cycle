@@ -2,16 +2,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using Unity.VisualScripting;
+using System.Linq;
 using Random = UnityEngine.Random;
 using Unity.Mathematics;
+using UnityEngine.AI;
 using System;
+using Unity.AI.Navigation;
 
 public class MapInterFace : MonoBehaviour
 {
+    public GameObject Map;
+
     [SerializeField] private LayerMask tileLayerMask;
     int seed = 0;
-    private int MapXSize = 128;
-    private int MapYSize = 128;
+    private int MapXSize = 64;
+    private int MapYSize = 64;
 
     private List<Tile> Tiles = new List<Tile>();
     private List<MapObject> Objects = new List<MapObject>();
@@ -32,12 +37,13 @@ public class MapInterFace : MonoBehaviour
     [SerializeField] private GameObject Tree_1;
     [SerializeField] private GameObject Tree_2;
     [SerializeField] private GameObject Tree_3;
+    [SerializeField] private GameObject Chicken;
 
     //private YRow[] YRows;
     private int AmountTiles = -1;
     private int AmountObjects = -1;
 
-    private float procentChanceOfWaterBecomeSand = 0.36f;
+    private float procentChanceOfWaterBecomeSand = 0.5f;
     private float procentChanceOfSandBecomeSeaWater = 0.20f;
     private float procentChanceOfLoseSandInSeaBecomeSeaWater = 0.98f;
     private bool doubleCheckTurnLoseSandInSeaSeaWater = true;
@@ -55,29 +61,41 @@ public class MapInterFace : MonoBehaviour
     int stoneMaxRangeLandTilesDevider = 145;
     float distanceBetweenStone = 1f;
 
-    int treeMinRangeLandTilesDevider = 40;
-    int treeMaxRangeLandTilesDevider = 20;
-    float distanceBetweenTree = 0.15f;
+    int treeMinRangeLandTilesDevider = 9;
+    int treeMaxRangeLandTilesDevider = 6;
+    float distanceBetweenTree = 0.3f;
 
-    private bool PlacedStones = false;
+    int chickenMinRangeLandTilesDevider = 120;
+    int chickenMaxRangeLandTilesDevider = 110;
+    float distanceBetweenChicken = 0.01f;
+
+    private bool PlacedObj = false;
 
     //Random rnd;
 
     private void Awake()
     {
+        
         LandGenerator();
     }
 
     private void FixedUpdate()
     {
-        if (!PlacedStones)
+        if (!PlacedObj)
         {
+            PlacedObj = true;
+
             PlaceStones(MapObject._ObjectType.Stone, Stone_1, stoneMinRangeLandTilesDevider, stoneMaxRangeLandTilesDevider, distanceBetweenStone);
             PlaceStones(MapObject._ObjectType.Stone, Stone_2, stoneMinRangeLandTilesDevider, stoneMaxRangeLandTilesDevider, distanceBetweenStone);
-            PlacedStones = true;
+
             PlaceTrees(MapObject._ObjectType.Tree, Tree_1, treeMinRangeLandTilesDevider, treeMaxRangeLandTilesDevider, distanceBetweenTree);
             PlaceTrees(MapObject._ObjectType.Tree, Tree_2, treeMinRangeLandTilesDevider, treeMaxRangeLandTilesDevider, distanceBetweenTree);
+            PlaceTrees(MapObject._ObjectType.Tree, Tree_2, treeMinRangeLandTilesDevider, treeMaxRangeLandTilesDevider, distanceBetweenTree);
             PlaceTrees(MapObject._ObjectType.Tree, Tree_3, treeMinRangeLandTilesDevider, treeMaxRangeLandTilesDevider, distanceBetweenTree);
+
+            Map.GetComponent<NavMeshSurface>().BuildNavMesh();
+
+            PlaceChickens(MapObject._ObjectType.Chicken, Chicken, chickenMinRangeLandTilesDevider, chickenMaxRangeLandTilesDevider, distanceBetweenChicken);
         }
     }
 
@@ -131,6 +149,57 @@ public class MapInterFace : MonoBehaviour
         CheckIfAllTilesWereGeneratedOnMap();
     }
 
+    private void PlaceChickens(MapObject._ObjectType objectType, GameObject g, int MinRangeLandTilesDevider, int MaxRangeLandTilesDevider, float distanceBetweenObject)
+    {
+        int amount = Random.Range((MapYSize * MapXSize) * 2 / MinRangeLandTilesDevider, ((MapYSize * MapXSize) * 2 / MaxRangeLandTilesDevider) + 1);
+
+        for (int i = 0; i < amount; i++)
+        {
+            float chosenXPos = Random.Range(0f, (float)MapXSize);
+            float chosenYPos = Random.Range(0f, (float)MapYSize);
+
+            //Tile chosenTile;
+            foreach (Tile tile in Tiles)
+            {
+                if (tile.XPos == (int)chosenXPos && tile.YPos == (int)chosenYPos && (tile.TileType == Tile._TileType.Grass || tile.TileType == Tile._TileType.Dirt || tile.TileType == Tile._TileType.Sand))
+                {
+                    AmountObjects++;
+                    MapObject mapObject = new MapObject();
+
+                    mapObject.XPos = chosenXPos;
+                    mapObject.YPos = chosenYPos;
+
+                    mapObject.ObjectType = objectType;
+                    mapObject.ObjectId = AmountObjects;
+
+                    //chosenTile = tile;
+
+                    float rndRotY = Random.Range(-180f, 180f);
+                    mapObject.RotY = rndRotY;
+
+                    Ray ray = new Ray();
+                    RaycastHit hit;
+
+                    ray.origin = new Vector3(chosenXPos, 20, chosenYPos);
+                    ray.direction = new Vector3(chosenXPos, -20, chosenYPos) - new Vector3(chosenXPos, 0, chosenYPos);
+
+                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, tileLayerMask))
+                    {
+                        mapObject.ObjectOnMap = Instantiate(g, hit.point, Quaternion.Euler(0, rndRotY, 0), Map.transform);
+                        mapObject.Generated = true;
+                        Objects.Add(mapObject);
+                    }
+                    else
+                    {
+                        Debug.LogError("Raycast Was created and drawn but never hit anything, " + chosenXPos + " " + chosenYPos);
+                    }
+                    Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red, 10f);
+                }
+
+            }
+        }
+    }
+
     private void PlaceStones(MapObject._ObjectType objectType, GameObject g, int MinRangeLandTilesDevider, int MaxRangeLandTilesDevider, float distanceBetweenObject)
     {
         int amount = Random.Range((MapYSize * MapXSize) / MinRangeLandTilesDevider, ((MapYSize * MapXSize) / MaxRangeLandTilesDevider) + 1);
@@ -167,7 +236,7 @@ public class MapInterFace : MonoBehaviour
 
                     if (Physics.Raycast(ray, out hit, Mathf.Infinity, tileLayerMask))
                     {
-                        mapObject.ObjectOnMap = Instantiate(g, hit.point, Quaternion.Euler(0, rndRotY, 0));
+                        mapObject.ObjectOnMap = Instantiate(g, hit.point, Quaternion.Euler(0, rndRotY, 0), Map.transform);
                         mapObject.Generated = true;
                         Objects.Add(mapObject);
                     }
@@ -241,7 +310,7 @@ public class MapInterFace : MonoBehaviour
 
     private void PlaceTrees(MapObject._ObjectType objectType, GameObject g, int MinRangeLandTilesDevider, int MaxRangeLandTilesDevider, float distanceBetweenObject)
     {
-        int amount = Random.Range((MapYSize * MapXSize) / MinRangeLandTilesDevider, ((MapYSize * MapXSize) / MaxRangeLandTilesDevider) + 1);
+        int amount = Random.Range((MapYSize * MapXSize) * 2 / MinRangeLandTilesDevider, ((MapYSize * MapXSize) * 2 / MaxRangeLandTilesDevider) + 1);
 
         for (int i = 0; i < amount; i++)
         {
@@ -275,7 +344,7 @@ public class MapInterFace : MonoBehaviour
 
                     if (Physics.Raycast(ray, out hit, Mathf.Infinity, tileLayerMask))
                     {
-                        mapObject.ObjectOnMap = Instantiate(g, hit.point, Quaternion.Euler(0, rndRotY, 0));
+                        mapObject.ObjectOnMap = Instantiate(g, hit.point, Quaternion.Euler(0, rndRotY, 0), Map.transform);
                         mapObject.Generated = true;
                         Objects.Add(mapObject);
                     }
@@ -870,7 +939,7 @@ public class MapInterFace : MonoBehaviour
                 // Tile variation
 
                 // Tile 1
-                g = Instantiate(WaterTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                g = Instantiate(WaterTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity, Map.transform);
                 tile.TileOnMap = g;
                 RandomRotateTile(g);
                 tile.Generated = true;
@@ -888,7 +957,7 @@ public class MapInterFace : MonoBehaviour
                 // Tile variation
 
                 // Tile 1
-                g = Instantiate(WaterTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                g = Instantiate(WaterTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity, Map.transform);
                 tile.TileOnMap = g;
                 RandomRotateTile(g);
                 tile.Generated = true;
@@ -907,7 +976,7 @@ public class MapInterFace : MonoBehaviour
                 // Tile variation
 
                 // Tile 1
-                g = Instantiate(GrassTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                g = Instantiate(GrassTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity, Map.transform);
                 tile.TileOnMap = g;
                 RandomRotateTile(g);
                 tile.Generated = true;
@@ -938,7 +1007,7 @@ public class MapInterFace : MonoBehaviour
             case Tile._TileType.Dirt:
                 // Tile variation
 
-                g = Instantiate(DirtTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                g = Instantiate(DirtTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity, Map.transform);
                 tile.TileOnMap = g;
                 RandomRotateTile(g);
                 tile.Generated = true;
@@ -970,7 +1039,7 @@ public class MapInterFace : MonoBehaviour
                 // Tile variation
 
                 // Tile 1
-                g = Instantiate(SandTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                g = Instantiate(SandTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity, Map.transform);
                 tile.TileOnMap = g;
                 RandomRotateTile(g);
                 tile.Generated = true;
@@ -1003,21 +1072,21 @@ public class MapInterFace : MonoBehaviour
                 {
                     case 0:
                         // Tile 1
-                        g = Instantiate(ForestTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                        g = Instantiate(ForestTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity, Map.transform);
                         tile.TileOnMap = g;
                         RandomRotateTile(g);
                         tile.Generated = true;
                         break;
                     case 1:
                         // Tile 2
-                        g = Instantiate(ForestTile_2, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                        g = Instantiate(ForestTile_2, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity, Map.transform);
                         tile.TileOnMap = g;
                         RandomRotateTile(g);
                         tile.Generated = true;
                         break;
                     case 2:
                         // Tile 3
-                        g = Instantiate(ForestTile_3, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                        g = Instantiate(ForestTile_3, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity, Map.transform);
                         tile.TileOnMap = g;
                         RandomRotateTile(g);
                         tile.Generated = true;
@@ -1030,21 +1099,21 @@ public class MapInterFace : MonoBehaviour
                 {
                     case 0:
                         // Tile 1
-                        g = Instantiate(MountainTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                        g = Instantiate(MountainTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity, Map.transform);
                         tile.TileOnMap = g;
                         RandomRotateTile(g);
                         tile.Generated = true;
                         break;
                     case 1:
                         // Tile 2
-                        g = Instantiate(MountainTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                        g = Instantiate(MountainTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity, Map.transform);
                         tile.TileOnMap = g;
                         RandomRotateTile(g);
                         tile.Generated = true;
                         break;
                     case 2:
                         // Tile 3
-                        g = Instantiate(MountainTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                        g = Instantiate(MountainTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity, Map.transform);
                         tile.TileOnMap = g;
                         RandomRotateTile(g);
                         tile.Generated = true;
@@ -1126,7 +1195,7 @@ public class MapObject
 
     public float RotY;
 
-    public enum _ObjectType { None, Stone, Tree };
+    public enum _ObjectType { None, Stone, Tree, Chicken };
     public _ObjectType ObjectType { get; internal set; }
 }
 

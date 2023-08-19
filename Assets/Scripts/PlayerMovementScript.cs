@@ -16,12 +16,16 @@ public class PlayerMovementScript : MonoBehaviour
 
     private void Update()
     {
+        if (this.transform.position.y < -6f)
+        {
+            this.transform.position = new Vector3(this.transform.position.x, -6f, this.transform.position.z);
+        }
         //if (mainCamera.transform.rotation.z != 0f)
         //{
         //    mainCamera.transform.eulerAngles = new Vector3(mainCamera.transform.eulerAngles.x, mainCamera.transform.eulerAngles.y, 0f);
         //}
 
-        if (Input.GetKey(KeyCode.Z))
+        if (Input.GetKey(KeyCode.W))
         {
             moveVector3 += this.transform.forward;
         }
@@ -33,7 +37,7 @@ public class PlayerMovementScript : MonoBehaviour
         {
             moveVector3 += this.transform.right;
         }
-        if (Input.GetKey(KeyCode.Q))
+        if (Input.GetKey(KeyCode.A))
         {
             moveVector3 += -this.transform.right;
         }
@@ -50,17 +54,17 @@ public class PlayerMovementScript : MonoBehaviour
         }
         else if (Input.mouseScrollDelta.y != 0f)
         {
-            moveVector3.y = Input.mouseScrollDelta.y;
+            moveVector3.y = -Input.mouseScrollDelta.y * speed;
         }
 
 
-        if (Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.Q))
         {
             if (Input.GetKey(KeyCode.E))
             {
                 rotateVector2.y += 1;
             }
-            if (Input.GetKey(KeyCode.A))
+            if (Input.GetKey(KeyCode.Q))
             {
                 rotateVector2.y += -1;
             }
@@ -89,7 +93,7 @@ public class PlayerMovementScript : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            speed = 13f;
+            speed = 15f;
         }
         else
         {
