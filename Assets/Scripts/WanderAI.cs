@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
 
-internal class WanderAI : MonoBehaviour
+internal class WanderAI : ProjectManager
 {
     private float wanderRadius;
     [SerializeField] private float minWanderRadius = 1;

@@ -4,7 +4,7 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PlayerMovementScript : MonoBehaviour
+public class PlayerMovementScript : ProjectManager
 {
     private float speed = 8f;
     private float rotateSpeed = 90f;

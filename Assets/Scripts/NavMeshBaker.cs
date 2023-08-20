@@ -2,7 +2,7 @@ using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class NavMeshBaker : MonoBehaviour
+public class NavMeshBaker : ProjectManager
 {
     private const string TILE_TAG = "Tile";
     private bool baked = false;

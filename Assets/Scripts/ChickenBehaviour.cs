@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class ChickenBehaviour : MonoBehaviour
+public class ChickenBehaviour : ProjectManager
 {
     [SerializeField] private Animator animator;
     private const string WALKING_BOOL = "Walking";

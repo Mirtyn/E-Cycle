@@ -9,7 +9,7 @@ using UnityEngine.AI;
 using System;
 using Unity.AI.Navigation;
 
-public class MapInterFace : MonoBehaviour
+public class MapInterFace : MapSettings
 {
     public GameObject Map;
 
