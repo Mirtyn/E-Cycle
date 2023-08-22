@@ -14,9 +14,6 @@ public class MapInterFace : MapSettings
     public GameObject Map;
 
     [SerializeField] private LayerMask tileLayerMask;
-    int seed = 0;
-    private int MapXSize = 64;
-    private int MapYSize = 64;
 
     private List<Tile> Tiles = new List<Tile>();
     private List<MapObject> Objects = new List<MapObject>();
@@ -42,32 +39,6 @@ public class MapInterFace : MapSettings
     //private YRow[] YRows;
     private int AmountTiles = -1;
     private int AmountObjects = -1;
-
-    private float procentChanceOfWaterBecomeSand = 0.5f;
-    private float procentChanceOfSandBecomeSeaWater = 0.20f;
-    private float procentChanceOfLoseSandInSeaBecomeSeaWater = 0.98f;
-    private bool doubleCheckTurnLoseSandInSeaSeaWater = true;
-
-    int waterMinRangeLandTilesDevider = 80;
-    int waterMaxRangeLandTilesDevider = 55;
-    int dirtMinRangeLandTilesDevider = 80;
-    int dirtMaxRangeLandTilesDevider = 55;
-    int forestMinRangeLandTilesDevider = 72;
-    int forestMaxRangeLandTilesDevider = 45;
-    int mountainMinRangeLandTilesDevider = 95;
-    int mountainMaxRangeLandTilesDevider = 70;
-
-    int stoneMinRangeLandTilesDevider = 160;
-    int stoneMaxRangeLandTilesDevider = 145;
-    float distanceBetweenStone = 1f;
-
-    int treeMinRangeLandTilesDevider = 9;
-    int treeMaxRangeLandTilesDevider = 6;
-    float distanceBetweenTree = 0.3f;
-
-    int chickenMinRangeLandTilesDevider = 120;
-    int chickenMaxRangeLandTilesDevider = 110;
-    float distanceBetweenChicken = 0.01f;
 
     private bool PlacedObj = false;
 
@@ -561,10 +532,9 @@ public class MapInterFace : MapSettings
             {
                 AmountTiles += 1;
                 Tile tile = new Tile();
+                tile.InitializeTile();
                 tile.XPos = x;
                 tile.YPos = y;
-                tile.MapXSize = MapXSize;
-                tile.MapYSize = MapYSize;
                 tile.TileId = AmountTiles;
 
                 Tiles.Add(tile);
@@ -784,14 +754,14 @@ public class MapInterFace : MapSettings
         writer.Write("\n -MountainMaxRangeLandTilesDevider: " + mountainMaxRangeLandTilesDevider);
         writer.Write("\n -StoneMinRangeLandTilesDevider: " + stoneMinRangeLandTilesDevider);
         writer.Write("\n -StoneMaxRangeLandTilesDevider: " + stoneMaxRangeLandTilesDevider);
-        writer.Write("\n -DirtMaxGenerations: " + Tiles[0].dirtMaxGenerations);
-        writer.Write("\n -DirtMaxGenerationsResultMultiplier: " + Tiles[0].dirtMaxGenerationsResultMultiplier);
-        writer.Write("\n -WaterMaxGenerations: " + Tiles[0].waterMaxGenerations);
-        writer.Write("\n -WaterMaxGenerationsResultMultiplier: " + Tiles[0].waterMaxGenerationsResultMultiplier);
-        writer.Write("\n -ForestMaxGenerations: " + Tiles[0].forestMaxGenerations);
-        writer.Write("\n -ForestMaxGenerationsResultMultiplier: " + Tiles[0].forestMaxGenerationsResultMultiplier);
-        writer.Write("\n -MountainMaxGenerations: " + Tiles[0].mountainMaxGenerations);
-        writer.Write("\n -MountainMaxGenerationsResultMultiplier: " + Tiles[0].mountainMaxGenerationsResultMultiplier);
+        writer.Write("\n -DirtMaxGenerations: " + dirtMaxGenerations);
+        writer.Write("\n -DirtMaxGenerationsResultMultiplier: " + dirtMaxGenerationsResultMultiplier);
+        writer.Write("\n -WaterMaxGenerations: " + waterMaxGenerations);
+        writer.Write("\n -WaterMaxGenerationsResultMultiplier: " + waterMaxGenerationsResultMultiplier);
+        writer.Write("\n -ForestMaxGenerations: " + forestMaxGenerations);
+        writer.Write("\n -ForestMaxGenerationsResultMultiplier: " + forestMaxGenerationsResultMultiplier);
+        writer.Write("\n -MountainMaxGenerations: " + mountainMaxGenerations);
+        writer.Write("\n -MountainMaxGenerationsResultMultiplier: " + mountainMaxGenerationsResultMultiplier);
         writer.Write("\n\n TILES: \n");
         writer.Write(" -None = 'o' \n");
         writer.Write(" -SeaWater = '~' \n");
@@ -1220,17 +1190,34 @@ public class Tile
     public enum _TileType { None, Grass, SeaWater, RiverWater, Sand, Dirt, Forest, Mountain };
     public _TileType TileType { get; internal set; }
 
-    public int dirtMaxGenerations { get; private set; } = 6;
-    public int dirtMaxGenerationsResultMultiplier { get; private set; } = 12;
+    public int dirtMaxGenerations;
+    public int dirtMaxGenerationsResultMultiplier;
 
-    public int waterMaxGenerations { get; private set; } = 7;
-    public int waterMaxGenerationsResultMultiplier { get; private set; } = 10;
+    public int waterMaxGenerations;
+    public int waterMaxGenerationsResultMultiplier;
 
-    public int forestMaxGenerations { get; private set; } = 8;
-    public int forestMaxGenerationsResultMultiplier { get; private set; } = 11;
+    public int forestMaxGenerations;
+    public int forestMaxGenerationsResultMultiplier;
 
-    public int mountainMaxGenerations { get; private set; } = 6;
-    public int mountainMaxGenerationsResultMultiplier { get; private set; } = 8;
+    public int mountainMaxGenerations;
+    public int mountainMaxGenerationsResultMultiplier;
+
+    public void InitializeTile()
+    {
+        MapXSize = MapSettings.MapXSize;
+        MapYSize = MapSettings.MapYSize;
+        dirtMaxGenerations = MapSettings.dirtMaxGenerations;
+        dirtMaxGenerationsResultMultiplier = MapSettings.dirtMaxGenerationsResultMultiplier;
+
+        waterMaxGenerations = MapSettings.waterMaxGenerations;
+        waterMaxGenerationsResultMultiplier = MapSettings.waterMaxGenerationsResultMultiplier;
+
+        forestMaxGenerations = MapSettings.forestMaxGenerations;
+        forestMaxGenerationsResultMultiplier = MapSettings.forestMaxGenerationsResultMultiplier;
+
+        mountainMaxGenerations = MapSettings.mountainMaxGenerations;
+        mountainMaxGenerationsResultMultiplier = MapSettings.mountainMaxGenerationsResultMultiplier;
+    }
 
     public void SetAndSpreadMountain(int generation)
     {
