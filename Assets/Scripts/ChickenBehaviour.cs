@@ -21,14 +21,18 @@ public class ChickenBehaviour : ProjectManager
     // Start is called before the first frame update
 
     private Vector3 prevFramePos;
-    void Start()
+    //void Start()
+    //{
+    //    //animator = transform.GetChild(1).GetComponent<Animator>();
+    //    //agent = GetComponent<NavMeshAgent>();
+    //    //fleeingAI = this.GetComponent<OFleeingAI>();
+    //    //attackingAI = this.GetComponent<OAttackingAI>();
+    //}
+
+    private void OnEnable()
     {
-        //animator = transform.GetChild(1).GetComponent<Animator>();
         prevFramePos = this.transform.position;
-        //agent = GetComponent<NavMeshAgent>();
         wanderAI = this.GetComponent<WanderAI>();
-        //fleeingAI = this.GetComponent<OFleeingAI>();
-        //attackingAI = this.GetComponent<OAttackingAI>();
     }
 
     // Update is called once per frame

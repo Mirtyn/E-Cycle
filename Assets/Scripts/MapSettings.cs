@@ -26,12 +26,12 @@ public class MapSettings : ProjectManager
     public static int stoneMaxRangeLandTilesDevider = 145;
     public static float distanceBetweenStone = 1f;
 
-    public static int treeMinRangeLandTilesDevider = 9;
-    public static int treeMaxRangeLandTilesDevider = 6;
+    public static int treeMinRangeLandTilesDevider = 3;
+    public static int treeMaxRangeLandTilesDevider = 1;
     public static float distanceBetweenTree = 0.3f;
 
-    public static int chickenMinRangeLandTilesDevider = 120;
-    public static int chickenMaxRangeLandTilesDevider = 110;
+    public static int chickenMinRangeLandTilesDevider = 60;
+    public static int chickenMaxRangeLandTilesDevider = 55;
     public static float distanceBetweenChicken = 0.01f;
 
     public static int dirtMaxGenerations { get; private set; } = 6;

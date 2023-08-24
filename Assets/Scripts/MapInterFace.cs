@@ -11,6 +11,7 @@ using Unity.AI.Navigation;
 
 public class MapInterFace : MapSettings
 {
+    private int thisSeed = MapSettings.seed;
     public GameObject Map;
 
     [SerializeField] private LayerMask tileLayerMask;
@@ -72,23 +73,23 @@ public class MapInterFace : MapSettings
 
     private void LandGenerator()
     {
-        //if (seed == 0)
+        //if (thisSeed == 0)
         //{
-        //    seed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
+        //    thisSeed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
         //}
 
-        if (seed == 0)
+        if (thisSeed == 0)
         {
-            seed = new System.Random().Next(int.MinValue, int.MaxValue);
+            thisSeed = new System.Random().Next(int.MinValue, int.MaxValue);
         }
 
 #pragma warning disable CS0618 // Type or member is obsolete
-        Random.seed = seed;
+        Random.seed = thisSeed;
 #pragma warning restore CS0618 // Type or member is obsolete
 
         //rnd = new Random(seed);
 
-        Debug.Log(seed);
+        Debug.Log(thisSeed);
 
         Debug.Log(Application.persistentDataPath + "/GeneratedMaps.txt");
         Debug.Log(Application.dataPath + "/.txt");
@@ -122,7 +123,7 @@ public class MapInterFace : MapSettings
 
     private void PlaceChickens(MapObject._ObjectType objectType, GameObject g, int MinRangeLandTilesDevider, int MaxRangeLandTilesDevider, float distanceBetweenObject)
     {
-        int amount = Random.Range((MapYSize * MapXSize) * 2 / MinRangeLandTilesDevider, ((MapYSize * MapXSize) * 2 / MaxRangeLandTilesDevider) + 1);
+        int amount = Random.Range((MapYSize * MapXSize) / MinRangeLandTilesDevider, ((MapYSize * MapXSize) / MaxRangeLandTilesDevider) + 1);
 
         for (int i = 0; i < amount; i++)
         {
@@ -281,7 +282,7 @@ public class MapInterFace : MapSettings
 
     private void PlaceTrees(MapObject._ObjectType objectType, GameObject g, int MinRangeLandTilesDevider, int MaxRangeLandTilesDevider, float distanceBetweenObject)
     {
-        int amount = Random.Range((MapYSize * MapXSize) * 2 / MinRangeLandTilesDevider, ((MapYSize * MapXSize) * 2 / MaxRangeLandTilesDevider) + 1);
+        int amount = Random.Range((MapYSize * MapXSize) / MinRangeLandTilesDevider, ((MapYSize * MapXSize) / MaxRangeLandTilesDevider) + 1);
 
         for (int i = 0; i < amount; i++)
         {
@@ -736,7 +737,7 @@ public class MapInterFace : MapSettings
 
         writer.Write("    -" + System.DateTime.Now.ToString() + "-" + "\n\n");
         writer.Write(" SETTINGS:");
-        writer.Write("\n -Seed: " + seed);
+        writer.Write("\n -Seed: " + thisSeed);
         writer.Write("\n -MapXSize: " + MapXSize);
         writer.Write("\n -MapYSize: " + MapYSize);
         writer.Write("\n -AmountTiles: " + (AmountTiles + 1));
