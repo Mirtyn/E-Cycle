@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 //using UnityEngine.UIElements;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class MainScript : MapSettings
 {
@@ -57,170 +58,196 @@ public class MainScript : MapSettings
         i = startMenuInputFields[0].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.seed.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(SEED); });
-        i.onDeselect.AddListener(delegate { Debug.Log("seedg"); });
+        i.onDeselect.AddListener(delegate { MapSettings.seed = EndOfEditingInputField(startMenuInputFields[0].GetComponentInChildren<TMP_InputField>(), MapSettings.seed); });
 
         //MapYSize
         i = startMenuInputFields[1].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.MapYSize.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(MAP_Y_SIZE); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[1].GetComponentInChildren<TMP_InputField>()); });
-        i.onDeselect.AddListener(delegate { Debug.Log("mXg"); });
+        i.onDeselect.AddListener(delegate { MapSettings.MapYSize = EndOfEditingInputField(startMenuInputFields[1].GetComponentInChildren<TMP_InputField>(), MapSettings.MapYSize); });
 
         //MapXSize
         i = startMenuInputFields[2].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.MapXSize.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(MAP_X_SIZE); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[2].GetComponentInChildren<TMP_InputField>()); });
+        i.onDeselect.AddListener(delegate { MapSettings.MapXSize = EndOfEditingInputField(startMenuInputFields[2].GetComponentInChildren<TMP_InputField>(), MapSettings.MapXSize); });
 
         //procentChanceOfWaterBecomeSand
         i = startMenuInputFields[3].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.procentChanceOfWaterBecomeSand.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(PROCENT_CHANCE_OF_WATER_BECOME_SAND); });
         i.onValueChanged.AddListener(delegate { ValueInBetweenProcentValues(startMenuInputFields[3].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.procentChanceOfWaterBecomeSand = EndOfEditingInputField(startMenuInputFields[3].GetComponentInChildren<TMP_InputField>(), MapSettings.procentChanceOfWaterBecomeSand); });
+
         //procentChanceOfSandBecomeSeaWater
         i = startMenuInputFields[4].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.procentChanceOfSandBecomeSeaWater.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(PROCENT_CHANCE_OF_SAND_BECOME_WATER); });
         i.onValueChanged.AddListener(delegate { ValueInBetweenProcentValues(startMenuInputFields[4].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.procentChanceOfSandBecomeSeaWater = EndOfEditingInputField(startMenuInputFields[4].GetComponentInChildren<TMP_InputField>(), MapSettings.procentChanceOfSandBecomeSeaWater); });
+
         //procentChanceOfLoseSandInSeaBecomeSeaWater
         i = startMenuInputFields[5].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.procentChanceOfLoseSandInSeaBecomeSeaWater.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(PROCENT_CHANCE_OF_LOSE_SAND_IN_SEA_BECOME_SEAWATER); });
         i.onValueChanged.AddListener(delegate { ValueInBetweenProcentValues(startMenuInputFields[5].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.procentChanceOfLoseSandInSeaBecomeSeaWater = EndOfEditingInputField(startMenuInputFields[5].GetComponentInChildren<TMP_InputField>(), MapSettings.procentChanceOfLoseSandInSeaBecomeSeaWater); });
+
         //waterMinRangeLandTilesDevider
         i = startMenuInputFields[6].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.waterMinRangeLandTilesDevider.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(WATER_MAX_RANGE_LAND_TILES_DEVIDER); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[6].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.waterMinRangeLandTilesDevider = EndOfEditingInputField(startMenuInputFields[6].GetComponentInChildren<TMP_InputField>(), MapSettings.waterMinRangeLandTilesDevider); });
+
         //waterMaxRangeLandTilesDevider
         i = startMenuInputFields[7].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.waterMaxRangeLandTilesDevider.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(WATER_MIN_RANGE_LAND_TILES_DEVIDER); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[7].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.waterMaxRangeLandTilesDevider = EndOfEditingInputField(startMenuInputFields[7].GetComponentInChildren<TMP_InputField>(), MapSettings.waterMaxRangeLandTilesDevider); });
+
         //dirtMinRangeLandTilesDevider
         i = startMenuInputFields[8].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.dirtMinRangeLandTilesDevider.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(DIRT_MAX_RANGE_LAND_TILES_DEVIDER); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[8].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.dirtMinRangeLandTilesDevider = EndOfEditingInputField(startMenuInputFields[8].GetComponentInChildren<TMP_InputField>(), MapSettings.dirtMinRangeLandTilesDevider); });
+
         //dirtMaxRangeLandTilesDevider
         i = startMenuInputFields[9].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.dirtMaxRangeLandTilesDevider.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(DIRT_MIN_RANGE_LAND_TILES_DEVIDER); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[9].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.dirtMaxRangeLandTilesDevider = EndOfEditingInputField(startMenuInputFields[9].GetComponentInChildren<TMP_InputField>(), MapSettings.dirtMaxRangeLandTilesDevider); });
+
         //forestMinRangeLandTilesDevider
         i = startMenuInputFields[10].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.forestMinRangeLandTilesDevider.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(FOREST_MAX_RANGE_LAND_TILES_DEVIDER); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[10].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.forestMinRangeLandTilesDevider = EndOfEditingInputField(startMenuInputFields[10].GetComponentInChildren<TMP_InputField>(), MapSettings.forestMinRangeLandTilesDevider); });
+
         //forestMaxRangeLandTilesDevider
         i = startMenuInputFields[11].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.forestMaxRangeLandTilesDevider.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(FOREST_MIN_RANGE_LAND_TILES_DEVIDER); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[11].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.forestMaxRangeLandTilesDevider = EndOfEditingInputField(startMenuInputFields[11].GetComponentInChildren<TMP_InputField>(), MapSettings.forestMaxRangeLandTilesDevider); });
+
         //mountainMinRangeLandTilesDevider
         i = startMenuInputFields[12].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.mountainMinRangeLandTilesDevider.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(MOUNTAIN_MAX_RANGE_LAND_TILES_DEVIDER); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[12].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.mountainMinRangeLandTilesDevider = EndOfEditingInputField(startMenuInputFields[12].GetComponentInChildren<TMP_InputField>(), MapSettings.mountainMinRangeLandTilesDevider); });
+
         //mountainMaxRangeLandTilesDevider
         i = startMenuInputFields[13].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.mountainMaxRangeLandTilesDevider.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(MOUNTAIN_MIN_RANGE_LAND_TILES_DEVIDER); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[13].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.mountainMaxRangeLandTilesDevider = EndOfEditingInputField(startMenuInputFields[13].GetComponentInChildren<TMP_InputField>(), MapSettings.mountainMaxRangeLandTilesDevider); });
+
         //stoneMinRangeLandTilesDevider
         i = startMenuInputFields[14].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.stoneMinRangeLandTilesDevider.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(STONE_MAX_RANGE_LAND_TILES_DEVIDER); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[14].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.stoneMinRangeLandTilesDevider = EndOfEditingInputField(startMenuInputFields[14].GetComponentInChildren<TMP_InputField>(), MapSettings.stoneMinRangeLandTilesDevider); });
+
         //stoneMaxRangeLandTilesDevider
         i = startMenuInputFields[15].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.stoneMaxRangeLandTilesDevider.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(STONE_MIN_RANGE_LAND_TILES_DEVIDER); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[15].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.stoneMaxRangeLandTilesDevider = EndOfEditingInputField(startMenuInputFields[15].GetComponentInChildren<TMP_InputField>(), MapSettings.stoneMaxRangeLandTilesDevider); });
+
         //treeMinRangeLandTilesDevider
         i = startMenuInputFields[16].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.treeMinRangeLandTilesDevider.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(TREE_MAX_RANGE_LAND_TILES_DEVIDER); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[16].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.treeMinRangeLandTilesDevider = EndOfEditingInputField(startMenuInputFields[16].GetComponentInChildren<TMP_InputField>(), MapSettings.treeMinRangeLandTilesDevider); });
+
         //treeMaxRangeLandTilesDevider
         i = startMenuInputFields[17].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.treeMaxRangeLandTilesDevider.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(TREE_MIN_RANGE_LAND_TILES_DEVIDER); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[17].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.treeMaxRangeLandTilesDevider = EndOfEditingInputField(startMenuInputFields[17].GetComponentInChildren<TMP_InputField>(), MapSettings.treeMaxRangeLandTilesDevider); });
+
         //chickenMinRangeLandTilesDevider
         i = startMenuInputFields[18].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.chickenMinRangeLandTilesDevider.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(CHICKEN_MAX_RANGE_LAND_TILES_DEVIDER); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[18].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.chickenMinRangeLandTilesDevider = EndOfEditingInputField(startMenuInputFields[18].GetComponentInChildren<TMP_InputField>(), MapSettings.chickenMinRangeLandTilesDevider); });
+
         //chickenMaxRangeLandTilesDevider
         i = startMenuInputFields[19].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.chickenMaxRangeLandTilesDevider.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(CHICKEN_MIN_RANGE_LAND_TILES_DEVIDER); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[19].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.chickenMaxRangeLandTilesDevider = EndOfEditingInputField(startMenuInputFields[19].GetComponentInChildren<TMP_InputField>(), MapSettings.chickenMaxRangeLandTilesDevider); });
+
         //dirtMaxGenerations
         i = startMenuInputFields[20].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.dirtMaxGenerations.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(DIRT_MAX_GENERATIONS); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[20].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.dirtMaxGenerations = EndOfEditingInputField(startMenuInputFields[20].GetComponentInChildren<TMP_InputField>(), MapSettings.dirtMaxGenerations); });
+
         //dirtMaxGenerationsResultMultiplier
         i = startMenuInputFields[21].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.dirtMaxGenerationsResultMultiplier.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(DIRT_MAX_GENERATIONS_RESULT_MULTIPLIER); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[21].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.dirtMaxGenerationsResultMultiplier = EndOfEditingInputField(startMenuInputFields[21].GetComponentInChildren<TMP_InputField>(), MapSettings.dirtMaxGenerationsResultMultiplier); });
+
         //waterMaxGenerations
         i = startMenuInputFields[22].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.waterMaxGenerations.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(WATER_MAX_GENERATIONS); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[22].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.waterMaxGenerations = EndOfEditingInputField(startMenuInputFields[22].GetComponentInChildren<TMP_InputField>(), MapSettings.waterMaxGenerations); });
+
         //waterMaxGenerationsResultMultiplier
         i = startMenuInputFields[23].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.waterMaxGenerationsResultMultiplier.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(WATER_MAX_GENERATIONS_RESULT_MULTIPLIER); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[23].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.waterMaxGenerationsResultMultiplier = EndOfEditingInputField(startMenuInputFields[23].GetComponentInChildren<TMP_InputField>(), MapSettings.waterMaxGenerationsResultMultiplier); });
+
         //forestMaxGenerations
         i = startMenuInputFields[24].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.forestMaxGenerations.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(FOREST_MAX_GENERATIONS); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[24].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.forestMaxGenerations = EndOfEditingInputField(startMenuInputFields[24].GetComponentInChildren<TMP_InputField>(), MapSettings.forestMaxGenerations); });
+
         //forestMaxGenerationsResultMultiplier
         i = startMenuInputFields[25].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.forestMaxGenerationsResultMultiplier.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(FOREST_MAX_GENERATIONS_RESULT_MULTIPLIER); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[25].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.forestMaxGenerationsResultMultiplier = EndOfEditingInputField(startMenuInputFields[25].GetComponentInChildren<TMP_InputField>(), MapSettings.forestMaxGenerationsResultMultiplier); });
+
         //mountainMaxGenerations
         i = startMenuInputFields[26].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.mountainMaxGenerations.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(MOUNTAIN_MAX_GENERATIONS); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[26].GetComponentInChildren<TMP_InputField>()); });
-        
+        i.onDeselect.AddListener(delegate { MapSettings.mountainMaxGenerations = EndOfEditingInputField(startMenuInputFields[26].GetComponentInChildren<TMP_InputField>(), MapSettings.mountainMaxGenerations); });
+
         //mountainMaxGenerationsResultMultiplier
         i = startMenuInputFields[27].GetComponentInChildren<TMP_InputField>();
         i.text = MapSettings.mountainMaxGenerationsResultMultiplier.ToString();
         i.onSelect.AddListener(delegate { SetInfoPanel(MOUNTAIN_MAX_GENERATIONS_RESULT_MULTIPLIER); });
         i.onValueChanged.AddListener(delegate { ValueNotLowerThen1(startMenuInputFields[27].GetComponentInChildren<TMP_InputField>()); });
+        i.onDeselect.AddListener(delegate { MapSettings.mountainMaxGenerationsResultMultiplier = EndOfEditingInputField(startMenuInputFields[27].GetComponentInChildren<TMP_InputField>(), MapSettings.mountainMaxGenerationsResultMultiplier); });
     }
 
     private void Update()
@@ -291,13 +318,38 @@ public class MainScript : MapSettings
         }
     }
 
-    //public void EndOfEditingInputField(TMP_InputField inputField)
-    //{
-    //    if (inputField.text == "")
-    //    {
-    //        inputField.text = MapSettings.
-    //    }
-    //}
+    public int EndOfEditingInputField(TMP_InputField inputField, int value)
+    {
+        if (inputField.text == "")
+        {
+            inputField.text = value.ToString();
+        }
+        else
+        {
+            int.TryParse(inputField.text, out int result);
+            value = result;
+        }
+        return value;
+    }
+
+    public float EndOfEditingInputField(TMP_InputField inputField, float value)
+    {
+        if (inputField.text == "")
+        {
+            inputField.text = value.ToString();
+        }
+        else
+        {
+            float.TryParse(inputField.text, out float result);
+            value = result;
+        }
+        return value;
+    }
+
+    public void StartGameButtonPressed()
+    {
+        SceneManager.LoadScene(1);
+    }
 
 
 

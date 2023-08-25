@@ -34,15 +34,15 @@ public class MapSettings : ProjectManager
     public static int chickenMaxRangeLandTilesDevider = 55;
     public static float distanceBetweenChicken = 0.01f;
 
-    public static int dirtMaxGenerations { get; private set; } = 6;
-    public static int dirtMaxGenerationsResultMultiplier { get; private set; } = 12;
+    public static int dirtMaxGenerations { get; set; } = 6;
+    public static int dirtMaxGenerationsResultMultiplier { get; set; } = 12;
 
-    public static int waterMaxGenerations { get; private set; } = 7;
-    public static int waterMaxGenerationsResultMultiplier { get; private set; } = 10;
+    public static int waterMaxGenerations { get; set; } = 7;
+    public static int waterMaxGenerationsResultMultiplier { get; set; } = 10;
 
-    public static int forestMaxGenerations { get; private set; } = 8;
-    public static int forestMaxGenerationsResultMultiplier { get; private set; } = 11;
+    public static int forestMaxGenerations { get; set; } = 8;
+    public static int forestMaxGenerationsResultMultiplier { get; set; } = 11;
 
-    public static int mountainMaxGenerations { get; private set; } = 6;
-    public static int mountainMaxGenerationsResultMultiplier { get; private set; } = 8;
+    public static int mountainMaxGenerations { get; set; } = 6;
+    public static int mountainMaxGenerationsResultMultiplier { get; set; } = 8;
 }
