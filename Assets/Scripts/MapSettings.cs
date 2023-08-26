@@ -45,4 +45,8 @@ public class MapSettings : ProjectManager
 
     public static int mountainMaxGenerations { get; set; } = 6;
     public static int mountainMaxGenerationsResultMultiplier { get; set; } = 8;
+
+    public static List<Tile> Tiles = new List<Tile>();
+    public static List<MapObject> Objects = new List<MapObject>();
+    public static List<MapObject> Creatures = new List<MapObject>();
 }

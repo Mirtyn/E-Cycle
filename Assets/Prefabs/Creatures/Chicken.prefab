@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 1543060751607913893}
   - component: {fileID: -5789248367229085185}
   - component: {fileID: 1070204676096691268}
+  - component: {fileID: -4218970504826330450}
+  - component: {fileID: 3472537849765176097}
   m_Layer: 0
   m_Name: Chicken
   m_TagString: Untagged
@@ -80,6 +82,36 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09f58c2d3bf2ebb4c9b03982d09b9ebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minWanderRadius: 1
+  maxWanderRadius: 6
+  minWanderTimer: 3
+  maxWanderTimer: 8
+  LayerMaskInteracteable: -1
+--- !u!114 &-4218970504826330450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548703174502063482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbefe158a79aac4ebe6e16fb25f90dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LayerMaskInteracteable: -1
+--- !u!114 &3472537849765176097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548703174502063482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ff7bd160225a004499d8d32bb4fb256, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   minWanderRadius: 1

@@ -16,38 +16,64 @@ public class MapInterFace : MapSettings
 
     [SerializeField] private LayerMask tileLayerMask;
 
-    private List<Tile> Tiles = new List<Tile>();
-    private List<MapObject> Objects = new List<MapObject>();
-    private List<MapObject> Creatures = new List<MapObject>();
+    public GameObject DirtTile_1;
+    public GameObject ForestTile_1;
+    public GameObject ForestTile_2;
+    public GameObject ForestTile_3;
+    public GameObject GrassTile_1;
+    public GameObject MountainTile_1;
+    public GameObject MountainTile_2;
+    public GameObject MountainTile_3;
+    public GameObject SandTile_1;
+    public GameObject WaterTile_1;
+    public GameObject Stone_1;
+    public GameObject Stone_2;
+    public GameObject Tree_1;
+    public GameObject Tree_2;
+    public GameObject Tree_3;
+    public GameObject Chicken;
+    public GameObject TheWaterTile;
 
-    [SerializeField] private GameObject DirtTile_1;
-    [SerializeField] private GameObject ForestTile_1;
-    [SerializeField] private GameObject ForestTile_2;
-    [SerializeField] private GameObject ForestTile_3;
-    [SerializeField] private GameObject GrassTile_1;
-    [SerializeField] private GameObject MountainTile_1;
-    [SerializeField] private GameObject MountainTile_2;
-    [SerializeField] private GameObject MountainTile_3;
-    [SerializeField] private GameObject SandTile_1;
-    [SerializeField] private GameObject WaterTile_1;
-    [SerializeField] private GameObject Stone_1;
-    [SerializeField] private GameObject Stone_2;
-    [SerializeField] private GameObject Tree_1;
-    [SerializeField] private GameObject Tree_2;
-    [SerializeField] private GameObject Tree_3;
-    [SerializeField] private GameObject Chicken;
+    [SerializeField] private GameObject sun;
+    private float sunRotateSpeed = 1f;
 
     //private YRow[] YRows;
     private int AmountTiles = -1;
     private int AmountObjects = -1;
 
     private bool PlacedObj = false;
+    public static bool IsDay = true;
 
     //Random rnd;
 
+    private void Update()
+    {
+        DayNightCycle();
+    }
+
+    private void DayNightCycle()
+    {
+        sun.transform.Rotate(new Vector3(sunRotateSpeed * Time.deltaTime, 0f, 0f));
+
+        if (sun.transform.eulerAngles.x >= 270 && sun.transform.eulerAngles.x <= 345)
+        {
+            IsDay = false;
+            sun.GetComponent<Light>().intensity = 0f;
+        }
+        else
+        {
+            IsDay = true;
+            sun.GetComponent<Light>().intensity = 2f;
+        }
+    }
+
     private void Awake()
     {
-        
+        Tiles = new List<Tile>();
+        Objects = new List<MapObject>();
+        Creatures = new List<MapObject>();
+
+        IsDay = true;
         LandGenerator();
     }
 
@@ -94,6 +120,20 @@ public class MapInterFace : MapSettings
         Debug.Log(Application.persistentDataPath + "/GeneratedMaps.txt");
         Debug.Log(Application.dataPath + "/.txt");
         //Debug.Log(Application. + "/test.txt");
+
+        TheWaterTile.transform.localScale = new Vector3(MapXSize - 0.02f, TheWaterTile.transform.localScale.y, MapYSize - 0.02f);
+
+        Tile.DirtTile_1 = DirtTile_1;
+        Tile.ForestTile_1 = ForestTile_1;
+        Tile.ForestTile_2 = ForestTile_2;
+        Tile.ForestTile_3 = ForestTile_3;
+        Tile.GrassTile_1 = GrassTile_1;
+        Tile.MountainTile_1 = MountainTile_1;
+        Tile.MountainTile_2 = MountainTile_2;
+        Tile.MountainTile_3 = MountainTile_3;
+        Tile.WaterTile_1 = WaterTile_1;
+        Tile.Map = Map;
+
         CreateTiles();
 
         GiveTilesAdjacentTiles();
@@ -864,48 +904,54 @@ public class MapInterFace : MapSettings
     {
         foreach (Tile tile in Tiles)
         {
-            switch (tile.TileType)
-            {
-                case Tile._TileType.None:
-                    Debug.LogError("A Tile with an unassigned TileType was tried to be rendered!\nTile: X: " + tile.XPos + ", Y: " + tile.YPos);
-                    break;
+            DrawTile(tile);
 
-                case Tile._TileType.SeaWater:
-                    DrawTile(tile, Tile._TileType.SeaWater);
-                    break;
+            //switch (tile.TileType)
+            //{
+            //    case Tile._TileType.None:
+            //        Debug.LogError("A Tile with an unassigned TileType was tried to be rendered!\nTile: X: " + tile.XPos + ", Y: " + tile.YPos);
+            //        break;
 
-                case Tile._TileType.RiverWater:
-                    DrawTile(tile, Tile._TileType.RiverWater);
-                    break;
+            //    case Tile._TileType.SeaWater:
+            //        DrawTile(tile, Tile._TileType.SeaWater);
+            //        break;
 
-                case Tile._TileType.Grass:
-                    DrawTile(tile, Tile._TileType.Grass);
-                    break;
+            //    case Tile._TileType.RiverWater:
+            //        DrawTile(tile, Tile._TileType.RiverWater);
+            //        break;
 
-                case Tile._TileType.Dirt:
-                    DrawTile(tile, Tile._TileType.Dirt);
-                    break;
+            //    case Tile._TileType.Grass:
+            //        DrawTile(tile, Tile._TileType.Grass);
+            //        break;
 
-                case Tile._TileType.Sand:
-                    DrawTile(tile, Tile._TileType.Sand);
-                    break;
-                case Tile._TileType.Forest:
-                    DrawTile(tile, Tile._TileType.Forest);
-                    break;
-                case Tile._TileType.Mountain:
-                    DrawTile(tile, Tile._TileType.Mountain);
-                    break;
-            }
+            //    case Tile._TileType.Dirt:
+            //        DrawTile(tile, Tile._TileType.Dirt);
+            //        break;
+
+            //    case Tile._TileType.Sand:
+            //        DrawTile(tile, Tile._TileType.Sand);
+            //        break;
+            //    case Tile._TileType.Forest:
+            //        DrawTile(tile, Tile._TileType.Forest);
+            //        break;
+            //    case Tile._TileType.Mountain:
+            //        DrawTile(tile, Tile._TileType.Mountain);
+            //        break;
+            //}
         }
     }
 
-    private void DrawTile(Tile tile, Tile._TileType tileType)
+    private void DrawTile(Tile tile)
     {
         int randomTileVariation = Random.Range(0, 3);
         //int randomTileVariation = rnd.Next(0, 3);
         GameObject g;
         switch (tile.TileType)
         {
+            case Tile._TileType.None:
+                Debug.LogError("A Tile with an unassigned TileType was tried to be rendered!\nTile: X: " + tile.XPos + ", Y: " + tile.YPos);
+                break;
+
             case Tile._TileType.RiverWater:
                 // Tile variation
 
@@ -1094,7 +1140,7 @@ public class MapInterFace : MapSettings
         }
     }
 
-    private void RandomRotateTile(GameObject g)
+    public static void RandomRotateTile(GameObject g)
     {
         int randomTileRotation = Random.Range(0, 4);
 
@@ -1136,6 +1182,11 @@ public class MapInterFace : MapSettings
 
         return false;
     }
+
+    //public static void DestroyObj(GameObject obj)
+    //{
+    //    Destroy(obj);
+    //}
 }
 
 
@@ -1202,6 +1253,19 @@ public class Tile
 
     public int mountainMaxGenerations;
     public int mountainMaxGenerationsResultMultiplier;
+
+    public static GameObject Map;
+
+    public static GameObject DirtTile_1;
+    public static GameObject ForestTile_1;
+    public static GameObject ForestTile_2;
+    public static GameObject ForestTile_3;
+    public static GameObject GrassTile_1;
+    public static GameObject MountainTile_1;
+    public static GameObject MountainTile_2;
+    public static GameObject MountainTile_3;
+    public static GameObject SandTile_1;
+    public static GameObject WaterTile_1;
 
     public void InitializeTile()
     {
@@ -1418,5 +1482,197 @@ public class Tile
             return true;
         }
         else { return false; }
+    }
+
+    public void ChangeTileType(_TileType changeToTileType)
+    {
+        TileType = changeToTileType;
+
+        MapInterFace.Destroy(TileOnMap);
+
+        int randomTileVariation = Random.Range(0, 3);
+
+        GameObject g;
+        switch (changeToTileType)
+        {
+            case Tile._TileType.None:
+                Debug.LogError("A Tile with an unassigned TileType was tried to be rendered!\nTile: X: " + XPos + ", Y: " + YPos);
+                break;
+
+            case Tile._TileType.RiverWater:
+                // Tile variation
+
+                // Tile 1
+                g = MapInterFace.Instantiate(WaterTile_1, new Vector3(XPos, 0, YPos), Quaternion.identity, Map.transform);
+                TileOnMap = g;
+                MapInterFace.RandomRotateTile(g);
+
+                //switch (randomTileVariation)
+                //{
+                //    case 0:
+                //        // Tile 1
+                //        g = Instantiate(WaterTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                //        RandomRotateTile(g);
+                //        break;
+                //}
+                break;
+            case Tile._TileType.SeaWater:
+                // Tile variation
+
+                // Tile 1
+                g = MapInterFace.Instantiate(WaterTile_1, new Vector3(XPos, 0, YPos), Quaternion.identity, Map.transform);
+                TileOnMap = g;
+                MapInterFace.RandomRotateTile(g);
+
+                //switch (randomTileVariation)
+                //{
+                //    case 0:
+                //        // Tile 1
+                //        g = Instantiate(WaterTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                //        RandomRotateTile(g);
+                //        break;
+                //}
+                break;
+
+            case Tile._TileType.Grass:
+                // Tile variation
+
+                // Tile 1
+                g = MapInterFace.Instantiate(GrassTile_1, new Vector3(XPos, 0, YPos), Quaternion.identity, Map.transform);
+                TileOnMap = g;
+                MapInterFace.RandomRotateTile(g);
+
+                //switch (randomTileVariation)
+                //{
+                //    case 0:
+                //        // Tile 1
+                //        g = Instantiate(GrassTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                //        RandomRotateTile(g);
+                //        tile.Generated = true;
+                //        break;
+                //    case 1:
+                //        // Tile 2
+                //        g = Instantiate(GrassTile_2, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                //        RandomRotateTile(g);
+                //        tile.Generated = true;
+                //        break;
+                //    case 2:
+                //        // Tile 3
+                //        g = Instantiate(GrassTile_3, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                //        RandomRotateTile(g);
+                //        tile.Generated = true;
+                //        break;
+                //}
+                break;
+
+            case Tile._TileType.Dirt:
+                // Tile variation
+
+                g = MapInterFace.Instantiate(DirtTile_1, new Vector3(XPos, 0, YPos), Quaternion.identity, Map.transform);
+                TileOnMap = g;
+                MapInterFace.RandomRotateTile(g);
+
+                //switch (randomTileVariation)
+                //{
+                //    case 0:
+                //        // Tile 1
+                //        g = Instantiate(DirtTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                //        RandomRotateTile(g);
+                //        tile.Generated = true;
+                //        break;
+                //    case 1:
+                //        // Tile 2
+                //        g = Instantiate(DirtTile_2, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                //        RandomRotateTile(g);
+                //        tile.Generated = true;
+                //        break;
+                //    case 2:
+                //        // Tile 3
+                //        g = Instantiate(DirtTile_3, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                //        RandomRotateTile(g);
+                //        tile.Generated = true;
+                //        break;
+                //}
+                break;
+
+            case Tile._TileType.Sand:
+                // Tile variation
+
+                // Tile 1
+                g = MapInterFace.Instantiate(SandTile_1, new Vector3(XPos, 0, YPos), Quaternion.identity, Map.transform);
+                TileOnMap = g;
+                MapInterFace.RandomRotateTile(g);
+
+                //switch (randomTileVariation)
+                //{
+                //    case 0:
+                //        // Tile 1
+                //        g = Instantiate(SandTile_1, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                //        RandomRotateTile(g);
+                //        tile.Generated = true;
+                //        break;
+                //    case 1:
+                //        // Tile 2
+                //        g = Instantiate(SandTile_2, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                //        RandomRotateTile(g);
+                //        tile.Generated = true;
+                //        break;
+                //    case 2:
+                //        // Tile 3
+                //        g = Instantiate(SandTile_3, new Vector3(tile.XPos, 0, tile.YPos), Quaternion.identity);
+                //        RandomRotateTile(g);
+                //        tile.Generated = true;
+                //        break;
+                //}
+                break;
+            case Tile._TileType.Forest:
+                // Tile variation
+                switch (randomTileVariation)
+                {
+                    case 0:
+                        // Tile 1
+                        g = MapInterFace.Instantiate(ForestTile_1, new Vector3(XPos, 0, YPos), Quaternion.identity, Map.transform);
+                        TileOnMap = g;
+                        MapInterFace.RandomRotateTile(g);
+                        break;
+                    case 1:
+                        // Tile 2
+                        g = MapInterFace.Instantiate(ForestTile_2, new Vector3(XPos, 0, YPos), Quaternion.identity, Map.transform);
+                        TileOnMap = g;
+                        MapInterFace.RandomRotateTile(g);
+                        break;
+                    case 2:
+                        // Tile 3
+                        g = MapInterFace.Instantiate(ForestTile_3, new Vector3(XPos, 0, YPos), Quaternion.identity, Map.transform);
+                        TileOnMap = g;
+                        MapInterFace.RandomRotateTile(g);
+                        break;
+                }
+                break;
+            case Tile._TileType.Mountain:
+                // Tile variation
+                switch (randomTileVariation)
+                {
+                    case 0:
+                        // Tile 1
+                        g = MapInterFace.Instantiate(MountainTile_1, new Vector3(XPos, 0, YPos), Quaternion.identity, Map.transform);
+                        TileOnMap = g;
+                        MapInterFace.RandomRotateTile(g);
+                        break;
+                    case 1:
+                        // Tile 2
+                        g = MapInterFace.Instantiate(MountainTile_2, new Vector3(XPos, 0, YPos), Quaternion.identity, Map.transform);
+                        TileOnMap = g;
+                        MapInterFace.RandomRotateTile(g);
+                        break;
+                    case 2:
+                        // Tile 3
+                        g = MapInterFace.Instantiate(MountainTile_3, new Vector3(XPos, 0, YPos), Quaternion.identity, Map.transform);
+                        TileOnMap = g;
+                        MapInterFace.RandomRotateTile(g);
+                        break;
+                }
+                break;
+        }
     }
 }
