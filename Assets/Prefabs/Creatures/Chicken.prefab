@@ -102,6 +102,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LayerMaskInteracteable: -1
+  minRadius: 1
+  maxRadius: 10
+  eatGrassEffect: {fileID: 240542078447178990, guid: 394580ccc9bec6e4fb7a72b0821971de,
+    type: 3}
 --- !u!114 &3472537849765176097
 MonoBehaviour:
   m_ObjectHideFlags: 0

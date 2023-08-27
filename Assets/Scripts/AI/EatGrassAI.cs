@@ -25,6 +25,8 @@ internal class EatGrassAI : MapSettings
 
     Tile grassTile = new Tile();
 
+    [SerializeField] private GameObject eatGrassEffect;
+
     // Use this for initialization
     private void OnEnable()
     {
@@ -46,7 +48,10 @@ internal class EatGrassAI : MapSettings
 
         //agent.SetDestination(newPos);
 
-        IEnumerable<Tile> grassTiles = Tiles.Where(t => t.TileType == Tile._TileType.Grass);
+        Tile._TileType search = Tile._TileType.Grass;
+
+        IEnumerable<Tile> grassTiles = Tiles.Where(t => t.TileType == search);
+
         //Tile closest = grassTiles.OrderBy(item => Math.Abs((this.transform.localPosition.x - item.XPos) + (this.transform.localPosition.z - item.YPos))).First();
 
         if (Eat2(grassTiles))
@@ -126,6 +131,8 @@ internal class EatGrassAI : MapSettings
                 goingForFood = false;
 
                 grassTile.ChangeTileType(Tile._TileType.Dirt);
+
+                Instantiate(eatGrassEffect, gameObject.transform.position, Quaternion.Euler(-90, 0, 0));
 
                 return true;
             }

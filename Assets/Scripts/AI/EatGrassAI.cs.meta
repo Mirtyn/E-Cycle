@@ -3,7 +3,9 @@ guid: 3dbefe158a79aac4ebe6e16fb25f90dc
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - eatGrassEffect: {fileID: 240542078447178990, guid: 394580ccc9bec6e4fb7a72b0821971de,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
